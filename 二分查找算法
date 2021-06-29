@@ -1,0 +1,46 @@
+#include<iostream>
+using namespace std;
+//要求数组从小到大排序 
+int binarysearch(int *a, int low, int high, int target) {  //递归实现 
+	if (low > high)
+		return -1;
+	int middle = (low + high) / 2;
+	if (a[middle] == target)
+		return middle;
+
+	if (a[middle] < target)
+		return binarysearch(a, middle + 1, high, target); //这里必须是middle+1，不然可能\
+		无法跳出递归，比如middle是6，high是7.如果传递进去6和7，那么middle永远是6\
+		会陷入循环递归，无法跳出 
+
+	else
+		return binarysearch(a, low, middle - 1, target);
+}
+
+int binarysearch1(int *a, int n, int target) {  //循环实现 
+	int low = 0, high = n - 1, middle;
+	while (low <= high) {
+		middle = (low + high) / 2;
+		if (a[middle] == target)
+			return middle;
+		else if (a[middle] < target)
+			low = middle + 1;
+		else
+			high = middle - 1;
+	}
+	return -1;
+}
+
+int main() {
+
+	int a[10] = { 2,3,5,6,8,9,12,14,19,17 };
+	for (int i = 0; i < 10; i++)
+		cout << a[i] << " ";
+	cout << endl;
+
+	cout << "index of 12  " << binarysearch(a, 0, 9, 12) << endl;
+	cout << "index1 of 8  " << binarysearch1(a, 10, 8) << endl << endl;
+	cout << "index of 20  " << binarysearch(a, 0, 9, 20) << endl;
+	cout << "index1 of 20  " << binarysearch1(a, 10, 20) << endl;
+
+}
